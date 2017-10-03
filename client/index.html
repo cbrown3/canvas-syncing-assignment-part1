@@ -2,12 +2,48 @@
 <html lang="en">
 <head>
     <script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script type="text/babel" >
         "use strict";
-    
+        
+        let socket;
+        
+        let myNum = 0;
+        
+        const init = () => {
+            socket = io.connect();
+        };
+        
+        window.onload = init;
+
+        const setupSocket = () => {
+            socket.on('updatePara', (data) => {
+                console.log(data);
+                const message = data.message;
+                document.querySelector("#myPara").innerHTML = `Current Number: ${message}`;
+            });
+            
+            socket.on('clearPara', (data) => {
+                document.querySelector("#myPara").innerHTML = "Current Number: ";
+            });
+        };
+
+        const sendMessage = () => {
+            myNum += 5;
+            //console.dir(myNum);
+
+            let messageData = {
+                message: myNum
+            };
+
+            socket.emit('updatePara', messageData);
+        };
+
+        setInterval(sendMessage, 3000);
+
     </script>
 </head>
-<body>
-
+<body >
+    <h1 id="myPara">Current Number: </h1>
 </body>
 </html>
