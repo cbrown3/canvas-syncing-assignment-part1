@@ -12,6 +12,7 @@
         
         const init = () => {
             socket = io.connect();
+            setupSocket();
         };
         
         window.onload = init;
@@ -20,11 +21,18 @@
             socket.on('updatePara', (data) => {
                 console.log(data);
                 const message = data.message;
+                myNum = data.message;
                 document.querySelector("#myPara").innerHTML = `Current Number: ${message}`;
             });
             
             socket.on('clearPara', (data) => {
                 document.querySelector("#myPara").innerHTML = "Current Number: 0";
+            });
+            
+            socket.on('connect', () => {
+                console.log('connecting');
+              
+                socket.emit('join', "user");
             });
         };
 
@@ -36,8 +44,8 @@
                 message: myNum
             };
             
-            socket.emit('updatePara', messageData);
             document.querySelector("#myPara").innerHTML = `Current Number: ${messageData.message}`;
+            socket.emit('updatePara', messageData);
         };
 
         setInterval(sendMessage, 3000);
