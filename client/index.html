@@ -24,7 +24,7 @@
             });
             
             socket.on('clearPara', (data) => {
-                document.querySelector("#myPara").innerHTML = "Current Number: ";
+                document.querySelector("#myPara").innerHTML = "Current Number: 0";
             });
         };
 
@@ -35,8 +35,9 @@
             let messageData = {
                 message: myNum
             };
-
+            
             socket.emit('updatePara', messageData);
+            document.querySelector("#myPara").innerHTML = `Current Number: ${messageData.message}`;
         };
 
         setInterval(sendMessage, 3000);
@@ -44,6 +45,6 @@
     </script>
 </head>
 <body >
-    <h1 id="myPara">Current Number: </h1>
+    <h1 id="myPara">Current Number: 0</h1>
 </body>
 </html>

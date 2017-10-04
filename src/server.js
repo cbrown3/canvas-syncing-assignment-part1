@@ -26,6 +26,12 @@ const onJoined = (sock) => {
         
         socket.join('room1');
     });
+    
+    socket.on('updatePara', (data) => {
+        console.dir(data);
+        io.sockets.in('room1').emit('updatePara', data);
+    });
+    
 };
 
 const onDisconnect = (sock) => {
@@ -39,7 +45,6 @@ io.sockets.on('connection', (socket) => {
     
     onJoined(socket);
     onDisconnect(socket);
-
 });
 
 console.log('Websocket server started');
